@@ -6,6 +6,7 @@
 ## What is Kafka?
 
 Apache Kafka is an open-source, distributed event streaming platform used for high-performance data pipelines, streaming analytics, and data integration.
+Its having High throughput , low latency , real time data streaming , fault tolerance and loose coupled . 
 
 **Event streaming** is the practice of:
 - Capturing data in real-time from event sources like databases, sensors, mobile devices, cloud services, and software applications in the form of streams of events
@@ -29,7 +30,7 @@ Apache Kafka is an open-source, distributed event streaming platform used for hi
 ## Core concepts and terminology
 
 ### Topic
-A topic is a category or feed name to which records are published. Think of it like a table in a database or a folder in a filesystem.
+A topic is a unique name for kafka stream. Think of it like a table in a database or a folder in a filesystem.
 
 ```
 farmer.registered     ← all farmer registration events
@@ -59,7 +60,7 @@ public void consumeFarmerRegistered(ConsumerRecord<String, FarmerRegisteredEvent
 ```
 
 ### Consumer Group
-A consumer group is a group of consumers that work together to consume a topic. Each message is delivered to only one consumer within the group.
+A consumer group is a group of consumers that work together to consume a topic. Each message is delivered to only one consumer within the group. 
 
 ```
 farmer.registered topic
@@ -78,6 +79,10 @@ Key points:
 
 ### Partition
 A topic is divided into partitions. Partitions allow Kafka to scale horizontally.
+
+1 partition = 1 consumer ( due to data inconsistancy).
+
+but multiple consumer from different consumer group can access the single partition.
 
 ```
 farmer.registered topic — 3 partitions
@@ -98,7 +103,7 @@ Partition 0: [offset 0] [offset 1] [offset 2] [offset 3] ...
 
 When a consumer acknowledges a message (`acknowledgment.acknowledge()`), Kafka advances the offset for that consumer group.
 
-### Broker
+### Kafka Broker/ kafka server
 A Kafka broker is a server that stores data and serves clients. A Kafka cluster consists of multiple brokers.
 
 ### Zookeeper
