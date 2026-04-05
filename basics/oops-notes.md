@@ -241,6 +241,8 @@ System.out.println(account.getBalance()); // 3000
 
 ## 6. Inheritance
 
+Its a mechanism in which one class acquires the properties and behaviours of parent class. the keyword extends is used by subclasses to inherit the features of superclass. 
+
 A child class **acquires properties and methods** of parent class.
 
 **"IS-A" relationship.**
@@ -293,7 +295,7 @@ dog.bark();  // Dog's own method
 1. Single         A → B
 2. Multilevel     A → B → C
 3. Hierarchical   A → B, A → C
-4. Multiple       ❌ Not supported with classes
+4. Multiple       ❌ Not supported with classes  A + B → C
                   ✅ Supported with interfaces
 ```
 
@@ -329,7 +331,6 @@ Same method name — different behaviour based on context.
 
 **Real life example:**
 - Person IS-A Employee at office, IS-A Father at home, IS-A Customer at shop — same person, different roles!
-- `+` operator — 2+3=5 (addition), "Hello"+"World"="HelloWorld" (concatenation)
 
 ### 7a. Compile Time Polymorphism — Method Overloading
 
@@ -456,7 +457,22 @@ public class PaymentController {
     }
 }
 ```
+**Method overloading vs method overriding:**
 
+| Feature | Method Overloading | Method Overriding |
+|---|---|---|
+| **Method names** | Must be same | Must be same |
+| **Argument types / parameters** | Must be different (number, type, or order) | Must be same (same number, type, and order) |
+| **Class relationship** | Usually happens in the same class (can also occur in inheritance) | Requires inheritance (parent-child relationship) |
+| **Return types** | no restriction | Must be same or covariant |
+| **private / final / static methods** | Can be overloaded | `private` and `final` cannot be overridden; `static` methods are hidden, not overridden |
+| **Checked exceptions** | No restriction |cannot throw broader checked exception than parent |
+| **Method resolution** | Takes place at compile time | Takes place at runtime |
+| **Polymorphism type** | Compile-time polymorphism | Runtime polymorphism |
+| **Constructors** | Can be overloaded | Cannot be overridden |
+| **Use when** | Need multiple versions of a method for different inputs | Need specific implementation of a parent class method in child class |
+
+---
 ---
 
 ## 9. Key Interview Questions
