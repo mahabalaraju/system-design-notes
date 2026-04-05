@@ -1,9 +1,3 @@
-# OOPs Concepts — Complete Notes & Cheat Sheet
-> My personal bible for OOPs mastery 🚀
-> Author: H Mahabalaraju | Updated: 2026
-
----
-
 ## 1. What is OOPs?
 
 Object Oriented Programming System (OOPs) is a programming concept that works on the principles of:
