@@ -155,10 +155,14 @@ public class CreditCard implements Payable {
 
 | Feature | Abstract Class | Interface |
 |---|---|---|
-| Methods | Abstract + Concrete | Only abstract (Java 7), default allowed (Java 8+) |
+| Use when | Know partial implementation | Contract / capability |
 | Variables | Any type | Only public static final |
+| Variable Initialization | Not mandatory during declaration | Must be initialized during declaration |
 | Inheritance | Single | Multiple |
-| Use when | Shared base behaviour | Contract / capability |
+| Use when | know partial implemention | Contract / capability |
+| Instance & Static blocks | Can declare | Cannot declare |
+| Constructors | Can declare | Cannot declare |
+| Methods | Abstract + Concrete | Only abstract (Java 7), default allowed (Java 8+) |
 
 ---
 
