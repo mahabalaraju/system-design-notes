@@ -370,36 +370,9 @@ If product price changes in database, the old cached price must be removed or up
 
 ---
 
-## Important Problem: Stale Data / Cache Inconsistency
-
-When using **local cache** in multiple servers, you may face a common issue:
-
-> One server updates the data, but other servers may still have **old cached values**.
-
-### Example:
-If **Server A** updates a product price:
-
-- Server A may show the **new price**
-- Server B may still show the **old price**
-
-This is called:
-
-- **Cache Inconsistency**
-- **Stale Data Problem**
-
-### Common solutions:
-- TTL expiry
-- cache invalidation
-- Redis Pub/Sub
-- event-driven cache refresh
-
-> In distributed systems, **keeping cache fresh is often harder than storing it**.
-
 ## Advanced Caching Problems
 
 In real-world systems, caching improves performance — but if not designed properly, it can also create serious issues.
-
-Below are some common advanced caching problems asked in interviews and seen in production systems.
 
 ---
 
@@ -623,25 +596,6 @@ One key can become so popular that it overloads a specific Redis shard or node.
 | **Cache Avalanche** | Many keys expire together | Large DB spike | Randomized TTL |
 | **Stale Data** | Cache returns old values | Incorrect user data | Invalidation, TTL |
 | **Hot Keys** | One key gets huge traffic | Redis bottleneck | Local cache, replication |
-
----
-
-## Interview Tip
-
-If an interviewer asks:
-
-### “What problems can caching cause?”
-
-You can mention:
-
-- cache stampede
-- thundering herd
-- cache penetration
-- cache avalanche
-- stale data
-- hot keys
-
-That shows you understand **real-world caching challenges**, not just theory.
 
 ---
 
