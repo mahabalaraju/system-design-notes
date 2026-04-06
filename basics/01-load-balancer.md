@@ -11,7 +11,6 @@ In simple words:
 A load balancer acts like a **traffic controller** between the client and the servers.
 
 ## Simple Flow
-## Simple Flow
 
 ```text
 Client Requests
