@@ -40,6 +40,9 @@ Client Requests
  [ Load Balancer ]
    ↙    ↓    ↘
 Server1 Server2 Server3
+```text
+
+
 
 
 # Load Balancer – Complete Guide
@@ -64,7 +67,6 @@ A **Load Balancer (LB)** distributes incoming network traffic across multiple ba
 
 ## How It Works (Flow)
 
-```text
 Client (browser/mobile)
         │
         ▼
