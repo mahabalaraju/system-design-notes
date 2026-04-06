@@ -1,13 +1,3 @@
- ## Types
-- Round Robin — requests go to each server one by one
-- weighted round robin — when some server better equipped to handle client requests we will give some weightage .  
-- Least Connections — goes to server with fewest active connections
-- IP Hash — same user always goes to same server
-
-## Tools used in industry
-Nginx, AWS Elastic Load Balancer, HAProxy
-
-
 # Load Balancer
 
 ## What is a Load Balancer?
@@ -21,6 +11,12 @@ In simple words:
 A load balancer acts like a **traffic controller** between the client and the servers.
 
 ## Simple Flow
+
+[ Client Requests ]
+              ↓
+      [  Load Balancer  ]  (e.g., Nginx, HAProxy, AWS ALB)
+      ↙       ↓       ↘
+ [Server 1] [Server 2] [Server 3]
 
 ```text
 Client Requests
