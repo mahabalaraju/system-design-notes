@@ -238,34 +238,7 @@ Because:
 
 This approach gives both **speed** and **scalability**.
 
----
 
-## Important Problem: Stale Data / Cache Inconsistency
-
-When using **local cache** in multiple servers, you may face a common issue:
-
-> One server updates the data, but other servers may still have **old cached values**.
-
-### Example:
-If **Server A** updates a product price:
-
-- Server A may show the **new price**
-- Server B may still show the **old price**
-
-This is called:
-
-- **Cache Inconsistency**
-- **Stale Data Problem**
-
-### Common solutions:
-- TTL expiry
-- cache invalidation
-- Redis Pub/Sub
-- event-driven cache refresh
-
-> In distributed systems, **keeping cache fresh is often harder than storing it**.
-
----
 
 ## Common Cache Strategies
 ---
@@ -397,6 +370,295 @@ If product price changes in database, the old cached price must be removed or up
 
 ---
 
+## Important Problem: Stale Data / Cache Inconsistency
+
+When using **local cache** in multiple servers, you may face a common issue:
+
+> One server updates the data, but other servers may still have **old cached values**.
+
+### Example:
+If **Server A** updates a product price:
+
+- Server A may show the **new price**
+- Server B may still show the **old price**
+
+This is called:
+
+- **Cache Inconsistency**
+- **Stale Data Problem**
+
+### Common solutions:
+- TTL expiry
+- cache invalidation
+- Redis Pub/Sub
+- event-driven cache refresh
+
+> In distributed systems, **keeping cache fresh is often harder than storing it**.
+
+## Advanced Caching Problems
+
+In real-world systems, caching improves performance — but if not designed properly, it can also create serious issues.
+
+Below are some common advanced caching problems asked in interviews and seen in production systems.
+
+---
+
+## 1) Cache Stampede
+
+A **Cache Stampede** happens when a **popular cache entry expires**, and **many requests** try to rebuild it at the same time.
+
+As a result:
+
+- all requests miss the cache
+- all of them hit the database together
+- backend gets overloaded
+
+### Example:
+A popular product page cache expires, and suddenly **10,000 users** request it at once.
+
+Now all those requests go to the database together.
+
+### Simple Flow:
+```text
+Popular Cache Expires
+        ↓
+Many Requests Arrive
+        ↓
+All Miss Cache
+        ↓
+All Hit Database
+        ↓
+Database Overload
+```
+
+### Solutions:
+- mutex / cache locking
+- background cache refresh
+- stale-while-revalidate
+- randomized TTL
+
+---
+
+## 2) The Thundering Herd Problem
+
+The **Thundering Herd Problem** is very similar to cache stampede.
+
+It happens when **many requests wake up or arrive at the same time** and all try to access the same resource together.
+
+This creates a sudden burst of traffic to the backend.
+
+### Example:
+A cache entry expires at **10:00:00**, and thousands of users request it at the same second.
+
+### Why it is dangerous:
+- latency spikes
+- DB overload
+- request timeouts
+- service degradation
+
+### Solutions:
+- request coalescing
+- mutex lock
+- stale cache serving
+- jitter in expiration time
+
+> In many backend discussions, **Cache Stampede** and **Thundering Herd** are used almost interchangeably.
+
+---
+
+## 3) Cache Penetration
+
+**Cache Penetration** happens when requests repeatedly ask for **data that does not exist**.
+
+Since the data is not in cache **and also not in database**, every request keeps going to the backend.
+
+### Example:
+A malicious or buggy client repeatedly requests:
+
+```text
+productId = 999999999
+```
+
+But that product does not exist.
+
+So every time:
+- cache miss
+- DB miss
+- repeated useless DB calls
+
+### Why it is dangerous:
+- wastes DB resources
+- increases unnecessary load
+- can be abused for attacks
+
+### Solutions:
+- cache null / empty responses for short TTL
+- Bloom Filters
+- input validation
+- rate limiting
+
+---
+
+## 4) Cache Breakdown
+
+**Cache Breakdown** happens when **one extremely hot / popular key expires**, and all requests for that single key hit the database at once.
+
+It is like a **single-key version of cache stampede**.
+
+### Example:
+A “Trending Product” key is requested by thousands of users every second.
+
+If that one key expires:
+- all requests go to DB
+- DB gets overloaded
+
+### Solutions:
+- never expire hot keys aggressively
+- use background refresh
+- use mutex locking
+- use stale data fallback
+
+---
+
+## 5) Cache Avalanche
+
+**Cache Avalanche** happens when **many cache keys expire at the same time**.
+
+This causes a large number of requests to suddenly hit the database together.
+
+### Example:
+Suppose thousands of cache entries are all set to expire at exactly:
+
+```text
+10 minutes
+```
+
+Then after 10 minutes:
+- many keys expire together
+- huge DB spike happens
+
+### Why it is dangerous:
+- traffic spike to DB
+- cascading failures
+- system slowdown or crash
+
+### Solutions:
+- randomized TTL (jitter)
+- staggered expiration times
+- multi-level caching
+- background warming
+
+---
+
+## 6) Stale Data
+
+**Stale Data** means the cache contains **old or outdated data** even though the actual source data has changed.
+
+### Example:
+A product price changes in the database from:
+
+```text
+₹999 → ₹899
+```
+
+But the cache still returns:
+
+```text
+₹999
+```
+
+So users see outdated information.
+
+### Why it happens:
+- cache not invalidated properly
+- TTL too long
+- distributed systems inconsistency
+- multiple app servers using local cache
+
+### Solutions:
+- TTL expiry
+- cache invalidation after DB update
+- event-driven cache refresh
+- Redis Pub/Sub
+- write-through strategy
+
+---
+
+## 7) Hot Keys in Redis
+
+A **Hot Key** is a cache key that gets requested **far more often than others**.
+
+### Example:
+- homepage data
+- trending products
+- live cricket score
+- flash sale item
+
+If millions of requests hit the same Redis key repeatedly, it can create:
+
+- Redis bottlenecks
+- uneven load
+- latency spikes
+
+### Why it is dangerous:
+One key can become so popular that it overloads a specific Redis shard or node.
+
+### Solutions:
+- local caching for hot keys
+- key replication
+- request throttling
+- sharding carefully
+- stale serving / prewarming
+
+---
+
+## Quick Comparison
+
+| Problem | What Happens | Main Risk | Common Fix |
+|---|---|---|---|
+| **Cache Stampede** | Many requests rebuild expired cache together | DB overload | Locking, background refresh |
+| **Thundering Herd** | Many requests hit same resource at same time | Latency spike / overload | Request coalescing, jitter |
+| **Cache Penetration** | Repeated requests for non-existent data | Wasted DB calls | Null caching, Bloom filter |
+| **Cache Breakdown** | One hot key expires | Single-key DB overload | Hot key protection |
+| **Cache Avalanche** | Many keys expire together | Large DB spike | Randomized TTL |
+| **Stale Data** | Cache returns old values | Incorrect user data | Invalidation, TTL |
+| **Hot Keys** | One key gets huge traffic | Redis bottleneck | Local cache, replication |
+
+---
+
+## Interview Tip
+
+If an interviewer asks:
+
+### “What problems can caching cause?”
+
+You can mention:
+
+- cache stampede
+- thundering herd
+- cache penetration
+- cache avalanche
+- stale data
+- hot keys
+
+That shows you understand **real-world caching challenges**, not just theory.
+
+---
+
+## Quick Summary
+
+Caching is powerful, but if not handled properly it can cause:
+
+- sudden traffic spikes
+- stale or incorrect data
+- unnecessary DB load
+- Redis bottlenecks
+- system instability
+
+That’s why **cache design is as important as cache usage**.
+
+---
+
 ## Redis and Caching
 
 ### What is Redis?
@@ -451,27 +713,6 @@ Caching is useful for:
 
 ---
 
-## Interview Questions
-
-### 1) What is Caching?
-Caching is the process of storing frequently accessed data in a faster storage layer to improve performance.
-
-### 2) What is Cache Hit and Cache Miss?
-- **Cache Hit** → data found in cache
-- **Cache Miss** → data not found in cache, so fetched from DB
-
-### 3) What is TTL in caching?
-TTL (Time To Live) defines how long data remains in cache before expiring.
-
-### 4) What is Cache Invalidation?
-Cache invalidation is the process of updating or removing stale cached data.
-
-### 5) What is the difference between Redis and in-memory cache?
-- **In-memory cache** is local to one application instance
-- **Redis** is shared across multiple servers
-
-### 6) Which caching strategy is most common?
-**Cache-Aside (Lazy Loading)** is the most commonly used caching strategy.
 
 ---
 
