@@ -13,14 +13,13 @@ A load balancer acts like a **traffic controller** between the client and the se
 ## Simple Flow
 ## Simple Flow
 
-``text
+```text
 Client Requests
        ↓
  [ Load Balancer ]  (e.g., Nginx, HAProxy, AWS ALB)
    ↙    ↓    ↘
 Server 1 Server 2 Server 3
-``text
-
+```
 
 **Real‑world example** – E‑commerce during Black Friday: a load balancer distributes millions of requests across hundreds of backend servers, preventing any single server from melting down.
 
@@ -33,7 +32,7 @@ Common Load‑Balancing Algorithms:
 | Least Connections    | Request goes to the server with the fewest active connections.linode                  |
 | IP Hash              | Same client IP always goes to the same server (session stickiness).linode             |
 
-Why Do We Need It?
+**Why Do We Need It?
 
 1) High Availability
 If one server crashes, the Load Balancer redirects traffic to the remaining healthy servers.
