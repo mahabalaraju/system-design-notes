@@ -17,19 +17,73 @@ Spring Boot is a Java framework built on top of Spring that simplifies applicati
 ---
 
 ## 2. Dependency Injection (DI)
-Dependency injection is the fundamental aspect in the springframework through which the spring container "injects" objects into the other objects.
+Dependency Injection (DI) is a design pattern where the Spring container (ApplicationContext) creates objects and injects their dependencies in the other class.
 
 Simplifies object creation and management, promoting **loose coupling**.
 
 Instead of creating objects manually:
 ```java
 // Without DI — tight coupling
-UserService service = new UserService(new UserRepository());
+UserService service = new UserService();
 
 // With DI — Spring creates and injects automatically
 @Autowired
 private UserService service;
 ```
+### Types of Dependency Injection
+
+1️⃣ Constructor Injection
+The dependencies are passed through the class constructor. This is the best practice recommended by the Spring team
+```java
+@Component
+public class UserService {
+
+    private final OrderService orderService;
+
+    public UserService(OrderService orderService) {
+        this.orderService = orderService;
+    }
+}
+```
+2️⃣ Setter Injection
+The dependency is provided via a public "setter" method after the object is created.
+```java
+@Component
+public class UserService {
+
+    private OrderService orderService;
+
+    @Autowired
+    public void setOrderService(OrderService orderService) {
+        this.orderService = orderService;
+    }
+}
+```
+
+3️⃣ Field Injection
+
+You put @Autowired directly on the private variable. No constructor or setter needed.
+
+```java
+@Component
+public class UserService {
+
+    @Autowired
+    private OrderService orderService;
+}
+```
+##  Dependency Injection Types Comparison
+
+| Feature | Constructor Injection | Setter Injection | Field Injection |
+|--------|---------------------|------------------|----------------|
+| Immutability | ✅ Yes (can use `final`) | ❌ No | ❌ No |
+| Circular Dependency | ❌ Not supported (fails fast) | ⚠️ Possible (not recommended) | ⚠️ Possible (not recommended) |
+| Testing | ✅ Easiest | 👍 Moderate | ❌ Hard |
+| Null Safety | ✅ Safe (mandatory deps) | ⚠️ Risk of null | ⚠️ Risk of null |
+| Readability | ✅ Clear dependencies | 👍 Acceptable | ❌ Hidden dependencies |
+| Recommendation | ⭐ Best practice | 👍 Use for optional deps | ❌ Avoid |
+
+---
 
 ---
 
@@ -96,7 +150,7 @@ private Topic topic; // Spring decides which implementation to inject
 ```
 ##  Bean defination: 
  The Bean is an object thats instantiated , assembled and managed by a spring IoC container. 
- # Pojo class : 
+ ### Pojo class : 
  plain old java objects : It's an ordinary java object it seperates the business logics from the model class not bound by any special restriction.
  its a template for Bean defination 
  
