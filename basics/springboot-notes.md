@@ -256,8 +256,48 @@ Note:
 - Example: Utility classes, Helper classes
 
 ### Simple Rule
-Your own class needed as bean     →  @Component
-You need to CREATE other beans    →  @Configuration + @Bean
+- Your own class needed as bean     →  @Component
+- You need to CREATE other beans    →  @Configuration + @Bean
+
+## Spring URL Annotations
+
+### @PathVariable
+Extracts value FROM the URL path itself Value is PART of the URL and  URL changes based on value
+ex: Identifying specific resource 
+```java
+@GetMapping("/students/{id}")
+public Student getStudent(@PathVariable int id) {
+    return studentService.getStudentById(id);
+```
+### @RequestParam
+- Extracts value from URL QUERY STRING (after ?) and  Has extra options → required, defaultValue
+ex.  Filtering / Searching / Sorting , Pagination                         
+```java
+@GetMapping("/greetings")
+public String greet(@RequestParam(defaultValue = "mahabala") String param) {
+    return "Hello " + param;
+}
+```
+## Spring Body Annotations
+
+### @RequestBody
+- Reads JSON from HTTP REQUEST body
+- Converts JSON → Java Object (Deserialization)
+- Used in POST, PUT, PATCH methods
+- Requires @RestController or @ResponseBody on class/method
+
+### @ResponseBody
+- Writes Java Object to HTTP RESPONSE body
+- Converts Java Object → JSON (Serialization)
+- Automatically applied when you use @RestController
+- Need to explicitly add if using @Controller
+  
+ CLIENT                          SERVER
+─────────                       ──────────
+Sends JSON     →→→→→→→→→→→    @RequestBody  converts JSON → Java Object
+Receives JSON  ←←←←←←←←←←    @ResponseBody converts Java Object → JSON
+
+}
 
 ---
 ## 5. Spring Annotations Cheat Sheet
