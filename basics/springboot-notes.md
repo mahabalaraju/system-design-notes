@@ -176,6 +176,7 @@ Every time you @Autowired it or call context.getBean(), Spring gives you a refer
 
 Example :
 
+```java
 @Component
 public class UserService {
 }
@@ -190,14 +191,15 @@ public class ApiGateway1Application {
 	        System.out.println(obj2);
 
 }
-
+```
 # prototype: A new instance is created every single time the bean is requested.
-
+```java
 @Bean
 @Scope("prototype")
 public UserService userService() {
     return new UserService();
 }
+```
 
 ## 🔹 Core Differences
 
@@ -262,7 +264,7 @@ Note:
 ## Spring URL Annotations
 
 ### @PathVariable
-Extracts value FROM the URL path itself Value is PART of the URL and  URL changes based on value
+Used to extract values from the URL path (e.g., /users/{id}).
 ex: Identifying specific resource 
 ```java
 @GetMapping("/students/{id}")
@@ -270,7 +272,7 @@ public Student getStudent(@PathVariable int id) {
     return studentService.getStudentById(id);
 ```
 ### @RequestParam
-- Extracts value from URL QUERY STRING (after ?) and  Has extra options → required, defaultValue
+Extracts query parameters from the URL
 ex.  Filtering / Searching / Sorting , Pagination                         
 ```java
 @GetMapping("/greetings")
@@ -297,14 +299,54 @@ public String greet(@RequestParam(defaultValue = "mahabala") String param) {
 Sends JSON     →→→→→→→→→→→    @RequestBody  converts JSON → Java Object
 Receives JSON  ←←←←←←←←←←    @ResponseBody converts Java Object → JSON
 
+### @Qualifier
+Used alongside @Autowired when you have two beans of the same type and need to tell Spring exactly which one to pick.
+
+### @Primary
+If multiple beans of the same type exist, the one marked @Primary will be chosen by default.
+
+# Two payment services
+```java
+@Component
+@Primary                               // default payment
+public class RazorpayService implements PaymentService {
+    public String pay(double amount) { return "Razorpay: ₹" + amount; }
 }
 
+@Component
+public class PaytmService implements PaymentService {
+    public String pay(double amount) { return "Paytm: ₹" + amount; }
+}
+```
+# OrderService — uses default (Razorpay)
+@Service
+public class OrderService {
+
+    @Autowired
+    private PaymentService paymentService; // RazorpayService injected (@Primary)
+}
+
+# RefundService — specifically needs Paytm
+@Service
+public class RefundService {
+
+    @Autowired
+    @Qualifier("paytmService")          // overrides @Primary
+    private PaymentService paymentService; // PaytmService injected
+}
+
+@Qualifier  >  @Primary  >  @Autowired default (by type)
+
+
+```
 ---
 ## 5. Spring Annotations Cheat Sheet
 
 | Annotation | Purpose |
 |---|---|
 | `@SpringBootApplication` | Main class — combines @Configuration + @EnableAutoConfiguration + @ComponentScan |
+| `@ComponentScan`| Scan this package (and its sub-packages) and automatically register all components as beans |
+| `@EnableAutoConfiguration`| Spring Boot automatically sets up things for you based on what you added in pom.xml |
 | `@RestController` | Marks class as REST controller | we can't pass Html and @RestController = @Controller + @ResponseBody
 | `@Controller` | Marks class as MVC controller | we can pass Html ,thymleaf ,Jsp | To return JSON, you must add @ResponseBody explicitly
 | `@Service` | Business logic layer |
@@ -336,11 +378,6 @@ Receives JSON  ←←←←←←←←←←    @ResponseBody converts Java Obj
 | `spring-boot-starter-test` | JUnit, Mockito |
 | `spring-boot-starter-actuator` | Monitoring and health checks |
 | `spring-boot-starter-cache` | Caching support |
-
----
-
-
-
 ---
 
 ## 9. application.properties vs application.yml
