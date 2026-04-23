@@ -1,5 +1,5 @@
 # Spring Boot — Complete Notes & Cheat Sheet
-> My personal bible for Spring Boot mastery 🚀
+> My personal notes for Spring Boot mastery 
 > Author: H Mahabalaraju | Updated: 2026
 
 ---
@@ -237,16 +237,39 @@ Note:
 - During destruction, dependent beans are destroyed FIRST, then dependencies.
 ---
 
+
+## Spring Bean Annotations
+
+### @Configuration
+- Is a Bean Factory
+- Exists only to create, configure and hand over objects to Spring
+- Has NO business logic of its own
+
+### @Bean
+- This METHOD produces a bean (used inside @Configuration)
+- Real-time example: RestTemplate (HTTP client), DataSource (DB connection pool),
+  third-party libraries (Jackson, Kafka, Redis) — where YOU control the construction
+- Created ONCE, reused everywhere (Singleton by default)
+
+### @Component
+- Auto-register YOUR class as a bean
+- Example: Utility classes, Helper classes
+
+### Simple Rule
+Your own class needed as bean     →  @Component
+You need to CREATE other beans    →  @Configuration + @Bean
+
+---
 ## 5. Spring Annotations Cheat Sheet
 
 | Annotation | Purpose |
 |---|---|
 | `@SpringBootApplication` | Main class — combines @Configuration + @EnableAutoConfiguration + @ComponentScan |
-| `@RestController` | Marks class as REST controller |
-| `@Controller` | Marks class as MVC controller |
+| `@RestController` | Marks class as REST controller | we can't pass Html and @RestController = @Controller + @ResponseBody
+| `@Controller` | Marks class as MVC controller | we can pass Html ,thymleaf ,Jsp | To return JSON, you must add @ResponseBody explicitly
 | `@Service` | Business logic layer |
 | `@Repository` | Data access layer |
-| `@Component` | Generic Spring bean |
+| `@Component` | Generic Spring bean | Auto-register YOUR class as a bean 
 | `@Autowired` | Dependency injection |
 | `@Bean` | Declares a bean in configuration class |
 | `@Configuration` | Marks class as configuration |
