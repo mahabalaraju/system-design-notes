@@ -44,6 +44,14 @@ public class UserService {
         this.orderService = orderService;
     }
 }
+
+using lombok 
+
+@Service
+@RequiredArgsConstructor // Automatically creates the constructor
+public class EmailService {
+    private final MailSender mailSender; // Lombok will inject this
+}
 ```
 2️⃣ Setter Injection
 The dependency is provided via a public "setter" method after the object is created.
@@ -76,12 +84,10 @@ public class UserService {
 
 | Feature | Constructor Injection | Setter Injection | Field Injection |
 |--------|---------------------|------------------|----------------|
-| Immutability | ✅ Yes (can use `final`) | ❌ No | ❌ No |
-| Circular Dependency | ❌ Not supported (fails fast) | ⚠️ Possible (not recommended) | ⚠️ Possible (not recommended) |
-| Testing | ✅ Easiest | 👍 Moderate | ❌ Hard |
-| Null Safety | ✅ Safe (mandatory deps) | ⚠️ Risk of null | ⚠️ Risk of null |
-| Readability | ✅ Clear dependencies | 👍 Acceptable | ❌ Hidden dependencies |
-| Recommendation | ⭐ Best practice | 👍 Use for optional deps | ❌ Avoid |
+| Immutability |  Yes (can use `final`) |  No |  No |
+| Circular Dependency |  Not supported (fails fast) |  Possible (not recommended) |  Possible (not recommended) |
+| Testing | Easiest | Moderate |  Hard |
+| Recommendation |  Best practice | Use for optional deps | Avoid |
 
 ---
 
