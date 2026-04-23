@@ -35,14 +35,15 @@ private UserService service;
 
 ## 3. Spring IoC (Inversion of Control)
 
-The **IoC Container** is the core of Spring Framework.
+The **IoC Container** is a principle in software engineering in which we are transfering the control of objects to the container
 
 **Responsibilities:**
-- Creates, manages, and configures application objects (beans)
-- Automatically injects required dependencies into beans
 - Manages bean lifecycle — creation, initialization, destruction
+- Automatically injects required dependencies into beans
 - Supports XML, annotation-based, and Java-based configuration
 - Separates object creation from business logic → more flexible and testable
+
+  the spring IoC container makes use of java pojo class and configuration metadata to produce a fully configured and executable system or application.
 
 ### Types of IoC Containers:
 
@@ -50,6 +51,8 @@ The **IoC Container** is the core of Spring Framework.
 |---|---|
 | **BeanFactory** | Basic container. Lazy initialization. Lightweight. |
 | **ApplicationContext** | Advanced container. Eager initialization. Recommended for most apps. |
+
+ApplicationContext is built on the top of bean factory interface. It adds some extra functionality like AOP , event propogation ,Internationalization.., its recommended over BeanFactory.
 
 ---
 
@@ -62,10 +65,7 @@ How often does a change in class A force related changes in class B?
 Two classes are directly dependent — change one, must change the other.
 
 ```java
-// Tight coupling — UserService directly depends on MySQLDatabase
-public class UserService {
-    MySQLDatabase db = new MySQLDatabase(); // tightly coupled!
-}
+UserService service = new UserService(new UserRepository());
 ```
 
 ### Loose Coupling ✅
@@ -94,7 +94,87 @@ public class KafkaTopic implements Topic {
 @Autowired
 private Topic topic; // Spring decides which implementation to inject
 ```
+##  Bean defination: 
+ The Bean is an object thats instantiated , assembled and managed by a spring IoC container. 
+ # Pojo class : 
+ plain old java objects : It's an ordinary java object it seperates the business logics from the model class not bound by any special restriction.
+ its a template for Bean defination 
+ 
+##  Bean Scopes
 
+| Scope | Description |
+|---|---|
+| `singleton` | Default. One instance per Spring container |
+| `prototype` | New instance every time bean is requested |
+| `request` | One instance per HTTP request |
+| `session` | One instance per HTTP session |
+
+
+
+# Singleton: The Spring IoC container creates exactly one instance of the bean.
+Every time you @Autowired it or call context.getBean(), Spring gives you a reference to that same original object.
+
+Example :
+
+@Component
+public class UserService {
+}
+@SpringBootApplication
+public class ApiGateway1Application {
+	public static void main(String[] args) {
+	ConfigurableApplicationContext context = SpringApplication.run(ApiGateway1Application.class, args);
+		UserService obj1 = context.getBean(UserService.class);
+		UserService obj2 = context.getBean(UserService.class);
+		
+		 System.out.println(obj1 == obj2);
+	        System.out.println(obj2);
+
+}
+
+# prototype: A new instance is created every single time the bean is requested.
+
+@Bean
+@Scope("prototype")
+public UserService userService() {
+    return new UserService();
+}
+
+## 🔹 Core Differences
+
+| Feature | Singleton Scope | Prototype Scope |
+|--------|----------------|----------------|
+| Instance Count | One instance per Spring IoC container | New instance every request |
+| Creation Time | Eager (created at startup by default) | Lazy (created on demand) |
+| State | Typically stateless | Typically stateful |
+| Destruction | Managed by Spring (`@PreDestroy` works) | Not managed by Spring |
+| Use Case | Service, Repository, Controller | User-specific / temporary objects |
+
+---
+## 7. Bean Lifecycle
+
+```
+Spring Container Starts
+        ↓
+Bean Definitions Loaded
+        ↓
+Bean Instantiated (Constructor)
+        ↓
+Dependencies Injected (@Autowired)
+        ↓
+@PostConstruct called (init)
+        ↓
+Bean Ready to Use
+        ↓
+Container Shutdown
+        ↓
+@PreDestroy called (destroy)
+        ↓
+Bean Destroyed
+
+```
+Note:
+- Dependencies are created and initialized BEFORE the dependent bean.
+- During destruction, dependent beans are destroyed FIRST, then dependencies.
 ---
 
 ## 5. Spring Annotations Cheat Sheet
@@ -136,44 +216,7 @@ private Topic topic; // Spring decides which implementation to inject
 
 ---
 
-## 7. Bean Lifecycle
 
-```
-Spring Container Starts
-        ↓
-Bean Definition Loaded
-        ↓
-Bean Instantiated
-        ↓
-Dependencies Injected
-        ↓
-@PostConstruct called
-        ↓
-Bean Ready to Use
-        ↓
-@PreDestroy called
-        ↓
-Bean Destroyed
-```
-
----
-
-## 8. Bean Scopes
-
-| Scope | Description |
-|---|---|
-| `singleton` | Default. One instance per Spring container |
-| `prototype` | New instance every time bean is requested |
-| `request` | One instance per HTTP request |
-| `session` | One instance per HTTP session |
-
-```java
-@Bean
-@Scope("prototype")
-public UserService userService() {
-    return new UserService();
-}
-```
 
 ---
 
