@@ -17,6 +17,7 @@ Spring Boot is a Java framework built on top of Spring that simplifies applicati
 ---
 
 ## 2. Dependency Injection (DI)
+Dependency injection is the fundamental aspect in the springframework through which the spring container "injects" objects into the other objects.
 
 Simplifies object creation and management, promoting **loose coupling**.
 
