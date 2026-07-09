@@ -184,8 +184,6 @@ Uses multiples of 1,024.1 GiB = 1,073,741,824 bytes (2³⁰ bytes).
 1 TiB (Tebibyte) = 2^40 bytes = 1,099,511,627,776 bytes
 1 PiB (Pebibyte) = 2^50 bytes = 1,125,899,906,842,624 bytes
 
-
-
 EC2 instance types - general purpose 
 
 great for a diversity of workloads such as web servers or code repositories 
