@@ -36,10 +36,27 @@ users or groups can be assigned json documents called policies
 these policies define teh persmissions of the users 
 In aws you apply the least privilege principle : don't give more permissions than a user needs
 
-IAM policies inheritance 
+IAM policies 
 
+inline policy : for single person 
 group policy: will apply for all the developers. they will inherit that. 
-Even if the same person is in other group he'll also get the access of other 
+              Even if the same person is in other group he'll also get the access of other 
+
+
+IAM policies structure 
+
+consists of 
+version : poliy language version, always include "2012-10-17"
+Id : an indentifier for the policy(optional) 
+statement: one or more individual statements(required)
+
+statements consists of : 
+sid: an identifier for the statement(optional)
+effect: wheather the statement allows or denies access(allow, deny) 
+principal: accoutn/ user / role to which this policy applied to 
+action: list of actions this policy allows or denies 
+resource : list of resources to which the actions applied to 
+condition : conditions for when this policy is in effect(optional) 
 
 test-developer :  https://115154236565.signin.aws.amazon.com/console
 username       : test-developer
@@ -72,14 +89,49 @@ language specific APIs (set of libraries)
 enables you to access and manage aws services programmatically 
 embedded within your application 
 
+AWS cloudshell: 
 
+its region specific : its just a terminal on aws cloud . 
 
+try : aws --version 
+clear 
+aws iam list-users 
+aws iam list-users --region
+ls
 
+IAM roles for services
 
-
-
-
-
+ some AWS service will need to perform actions on your behalf
+ to do so, we will assign permissions to aws services with IAM roles 
+ 
+ common roles : 
+  ec2 intance roles 
+  lambda function roles 
+  roles for cloudformation 
+  
+ IAM security tools (Audit)
+ 
+ IAM credentials report (account-level) 
+  a report that lists all your accounts users and the status of their various credentials 
+  
+ IAM access advisor(user-level)
+  access advisor shows the service permissions granted to a user and when those services were last accessed
+  you can use this information to revice your policies.
+  
+  shared responsbility model for IAM : 
+  
+  means what you are responsible and aws for ? 
+  
+            AWS                                             You 
+  infrastructure (global network security)        users, groups, roles, plicies management and monitering 
+  configuration and vulnerability analysis    enable MFA on all accounts 
+  compliance validation                       rotate all your keys often 
+                                              Use IAM tools to apply appropriate permissions 
+									                                 		  analyse access pattern and review permissions 
+											  
+											  
+-----------------------------------------------------------------------------------------------------------------
+EC2: 
 
 
 EC2 instance types - general purpose 
