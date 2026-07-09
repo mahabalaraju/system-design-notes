@@ -19,6 +19,7 @@ Phase 3        Days 21–25        Learn CI/CD tools (CodeCommit, CodeBuild, Cod
  available services within a region : new services and new features aren't available in every region 
  
  pricing : pricing varies region to region and is transparent in the service pricing page. 
+ 
                                                                                       ---------
                                                                                          IAM:
                                                                                       ---------
@@ -130,8 +131,59 @@ IAM roles for services
 									                                 		  analyse access pattern and review permissions 
 											  
 											  
------------------------------------------------------------------------------------------------------------------
-EC2: 
+
+Billing and cost management:
+Budget: we have budget so if it exceeds it will send the mails we added.
+Bills: we have sofiscated dashboard to view the bills on what and which . 
+
+
+EC2 (Elastic compute cloud): infrastructure as a service 
+  is one of the most popular of AWS offering 
+  
+  Its mainly consists in the capability of : 
+  renting virtual machines(EC2) 
+  storing data on virtual drives(EBS) 
+  distributing load across machines(ELB)
+  scaling the services using an auto-scaling group(ASG). 
+ 
+ knowing EC2 is fundamental to understand how the cloud works . 
+ 
+ EC2 sizing and configuration options 
+ operating OS : mac, linux and windows 
+ CPU, RAM 
+ storage space : Network-attached(EBS and EFS)
+                 hardware (EC2 instance store) 
+ network card: speed of the card, public IP address 
+ firewall rules : security group 
+
+
+ bootstrap script (configure at first launch) : EC2 user data
+ Its possible to boostrap our instances using an EC2 user data script . 
+ bootstrapping means launching commands when a machine starts 
+ that scripts is only run once at the instance first start 
+ EC@ user data is used to automate the boot task such as: 
+ installing updates 
+ installing softwares 
+ downloading common files from the internet 
+ anything you can think o files
+the EC2 user data script runs with the root user 
+
+
+Notes: 
+GB (Gigabyte) = Base 10 (Decimal)
+How humans count.
+1 GB = 1,000,000,000 bytes (Exactly 1 Billion bytes).
+
+GiB (Gibibyte) = Base 2 (Binary)
+How computer hardware and AWS operate.
+Uses multiples of 1,024.1 GiB = 1,073,741,824 bytes (2³⁰ bytes).
+
+1 KiB (Kibibyte) = 2^10 bytes = 1,024 bytes
+1 MiB (Mebibyte) = 2^20 bytes = 1,048,576 bytes
+1 GiB (Gibibyte) = 2^30 bytes = 1,073,741,824 bytes
+1 TiB (Tebibyte) = 2^40 bytes = 1,099,511,627,776 bytes
+1 PiB (Pebibyte) = 2^50 bytes = 1,125,899,906,842,624 bytes
+
 
 
 EC2 instance types - general purpose 
@@ -205,4 +257,5 @@ they regulate :
  80= http - access unsecured websites 
  443 = https - access secured websites 
  3389 = rdp - remote desktop protocol - log into a window instance 
+
  
