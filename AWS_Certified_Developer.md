@@ -256,4 +256,72 @@ they regulate :
  443 = https - access secured websites 
  3389 = rdp - remote desktop protocol - log into a window instance 
 
+SSH : Secure Shell. 
+ It is a secure way to remotely control your AWS cloud servers from your own computer.
+ PuTTY is a free ssh client. 
+ Pem if window < 10 
+ .ppk file if window >10
+ 
+ EC2 instances purchasing options 
+ 
+ On-demand instances - short workload, predictable pricing, pay by second 
+  pay for what you use : 
+  linux or windows (billing per second) other are per hour basis . 
+  highest cost but no upfront payment , no long term commitment . 
+  recommended for short term and un-interrupted workloads, where you can't predict how the application will behave . 
+ 
+ reserved instances( 1 and 3 years) 
+  reserved instances - long workloads  
+  
+  upto 72% discount compared to on-demand 
+  you reserve a specific instance attributes (instance type, region, tenancy, os) 
+  payment options - no upfront (+) , partial upfront (++) , full payment (+++). 
+  reserved instances scope - regional or zonal (reserve capacity in AZ)
+  recommended for steady-state usage application ( think database)
+  you can buy and sell in the reserved instances marketplace 
+  
+  convertible reserved instances - long workloads with flexible instances
+  can change the ec2 instance type , instance family , os , scope and tenancy
+  upto to 66% discount . 
+   
+ saving plans ( 1 and 3 years) - commitment to an amount of usage, long workload 
+   get a discount based on long-term usage ( upto 72% - same as RIs) 
+   commitment to certain type of usage (10$/hr for 1 or 3 years) 
+   usage beyong ec2 savings plans is billed at the on demand price . 
+   locked to specific instance family and aws region (ex. m5  in us-east1 ) 
+   flexible accross : 
+     instnace size (ex. m5.xlarge, m5.2xlarge)
+	 os(ex. linux , windows)
+	 tenancy(host, dedicated, default)
+ 
+ 
+ spot instances - short workloads, cheap, can loose instances (less reliable) (batch jobs , data analysis , image processing, any distributed workloads  , workloads with a flexible start and end time. not suitable for critical jobs or databases. 
+ 
+ dedicated hosts - book an entire physical server, control instance placement. 
+ 
+ A physical server with EC2 instance capacity fully dedicated to your use 
+ allows you address compliance requirements and use your existing server bound software licenses (per socket, per core , pre - vm software licenses) 
+ purchasing options : 
+ on demand - pay per second for active dedicated host
+ reserved - 1 or 3 years ( No upfront, partial upfront, all upfront) 
+ the most expensive option 
+ useful for software that have complicated licensing model (BYOL- bring your own licence) 
+ or for companies that have strong regulatory or compliance needs 
+ 
+ 
+ dedicated instances  -  no other customer will share your hardware 
+ 
+ Instances run on hardware thats dedicated to you (multi-tenant). 
+ may share hardware with other instances in same account 
+ no control over instance placement ( can move hardware after stop / start) 
+ 
+ capacity reservations - reserve capacity in a spacific AZ for any duration. 
+ 
+ reserve on demand instances capacity in a specific AZ for any duration 
+ you always have access to EC2 capacity when you need it
+ no time commitment ( create/cancel anytime) no billing discounts 
+ combine with regional reserved instances and savings plans to benifit from billing discounts 
+ you're charged at on-demand rate wheather you run instances or not 
+ suitable for short term , uniterrrupted workloads that needs to be in  a specific AZ
+ 
  
