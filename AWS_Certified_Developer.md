@@ -369,7 +369,17 @@ have a provisioned capacity( size in GB's and IOPS)
 	fast snapshot restore (FSR) 
 	force full initializaation of snapshot to have no latency on first use ($$$) . 
 	
+	the snapshots are very important in retaining the deleted volumes and instances and completely create new replica of those .. in few clicks . 
 	
+	AMI
+	
+	AMI = amazon machine image 
+	AMI are a customization of an EC2 instance 
+	 you add your own software, configuration, operating system, monitering .. 
+	 faster boot/ configuration time because all your software is pre-packaged. 
+	AMI are built for a specific region(and can be copied across regions) 
+	you can launch EC2 instances from : 
+	a PUblic ami  :  AWS provided. 
 
 
 
