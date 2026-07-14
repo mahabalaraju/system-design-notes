@@ -323,5 +323,7 @@ SSH : Secure Shell.
  combine with regional reserved instances and savings plans to benifit from billing discounts 
  you're charged at on-demand rate wheather you run instances or not 
  suitable for short term , uniterrrupted workloads that needs to be in  a specific AZ
+
+ 
  
  
