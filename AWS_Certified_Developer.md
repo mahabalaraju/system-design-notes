@@ -324,6 +324,55 @@ SSH : Secure Shell.
  you're charged at on-demand rate wheather you run instances or not 
  suitable for short term , uniterrrupted workloads that needs to be in  a specific AZ
 
- 
+ Whats an EBS volume ? 
+
+An EBS (Elastic block store) volume is a network drive(consider USD flash drive) you can attach to your instance while they run 
+It allows your instance to persist data, even after their termination 
+they can only be mounted to one instance at a time( at a ccp level)
+they are bound to a specific specific availability zone
+
+Analogy : think of them as a "network USB stick". 
+	
+Note : ccp - certified cloud practitioner - one EBS can be only mounted to one EC2 instance associate level(solution architect, developer, sysops):  EBS Multi-Attach. This specific feature allows you to attach a single, specialized Provisioned IOPS (io1 or io2) EBS volume to up to 16 AWS Nitro-based EC2 instances simultaneously within the same availability zone.
+
+EBS volume 
+
+its a network drive (i.e., not a physical drive)
+ it uses the network to communicate the instance, which means there might be a bit of latency 
+ it can be detached from an ec2 instance and attached to another one quickly 
+
+its locked to an availabilityzone (AZ) 
+ An EBS volume in us-east-I a cannot be attached to us-east-Ib
+ To move a volume across, you first need to snapshotit 
+
+have a provisioned capacity( size in GB's and IOPS) 
+
+ you get billed for all the provisioned capacity 
+ you can increase the capacity of the drive over time
+	 
+	EBS Snapshots -- ( like git commits )
+
+	 Make a backup (snapshot) of your EBS volume at a point in time 
+	 Not necesary to detach volume to do snapshot, but recommended 
+	 can copy snapshots across AZ or Region
+	 
+	EBS Snapshots features 
+
+	EBS Snapshots Archive (Git Cold Storage)
+	 move a Snapshots to an "archieve tier" that is 75% cheaper . 
+	 takes within 24 to 72 hours for restoring the archive 
+	 
+	Recycle bin for EBS snapshots 
+	 setup rules to retain deleted snapshots so you can recover them after an accidental deletion 
+	 specify retnetion ( from 1 day to 1 year) 
+	 
+	fast snapshot restore (FSR) 
+	force full initializaation of snapshot to have no latency on first use ($$$) . 
+	
+	
+
+
+
+
  
  
