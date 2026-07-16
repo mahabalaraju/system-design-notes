@@ -370,6 +370,37 @@ have a provisioned capacity( size in GB's and IOPS)
 	force full initializaation of snapshot to have no latency on first use ($$$) . 
 	
 	the snapshots are very important in retaining the deleted volumes and instances and completely create new replica of those .. in few clicks . 
+
+
+EBS volume types 
+
+EBS volumes come in 6 types 
+
+  gp2/ gp3 (SSD) : General purpose SSD volume that balances price and performancefor a wide variety of workloads 
+  gp3 : 3000 iops and throughput of 125 MiB/s can increase upto 16000 and 1000MiB/s independently
+  gp2:  3000 Iops and max 16k
+  
+  io1 / io2 block express (SSD) : Highest-performance SSD volume for mission-critical low-latency or high-throughput workloads 
+  Great for databases workloads (sensitive to storage per and consistency ) 
+   io1 (4 GiB - 16 TiB)
+   max Piops : 64000 for nitro EC2 instances and 32000 for other 
+   io2 Block express (4 GiB - 64 TiB) : 
+   Sub-millisecond latency 
+   max Piops : 256000 with an IOPs : GIB ration of 1000: 1
+   supports EBS multiattach (means upto 16 EC2 instances at a time. it will manage concurrent read and write operations )
+   
+  stl (HDD): low cost HDD volume designeed for frequently accessed, throughput-intensive workloads 
+  Throughput optimized HDD (st1): big data , data warehouses , log processing 
+  max throughput 500 MiB/s- max IOPs 500
+  
+  scl(HDD) : lowest cost HDD volume designed for less frequently accessed workloads 
+  Cold HDD sc1 : for data thats infrequently accessed . scenarios where lowest cost is important 
+  max throughput250 MiB/s - max IOPs 250
+  
+  EBS volumes are characterized in size / throughput / iops (i/o ops per sec)
+  when in doubt always consult the aws documentation  - its good!
+  Only gp2 / gp3 and io1/io2 block express can be used as boot volumes
+
 	
 	AMI
 	
@@ -401,7 +432,19 @@ systemctl start httpd
 systemctl enable httpd
 echo "<h1>Hello world from $(hostname -f)</h1>" > /var/www/html/index.html
 
+EC2 instance store 
 
+EBS volumes are network drives with good but "limited" performance 
+if you need a high-performance hardware disk, use EC2 instance store 
+better I/0 performance
+EC2 instance store lose their storage if they're stopped (ephemeral)
+good for buffer / cache / scratch data/ temporary content 
+risk of data loss if hardware fails 
+backups and replication are your responsibility	
 
- 
+  
+  Amazon EFS - Elastic File System 
+  --------------------------------
+  
+  Managed NFS (network file system ) that can be mounted 
  
