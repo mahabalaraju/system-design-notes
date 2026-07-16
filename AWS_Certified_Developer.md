@@ -446,5 +446,113 @@ backups and replication are your responsibility
   Amazon EFS - Elastic File System 
   --------------------------------
   
-  Managed NFS (network file system ) that can be mounted 
+ Managed NFS (network file system ) that can be mounted on many EC2 
+  EFS works with EC2 instances in multi-AZ
+  Highly available, scalable, expensive (3x gp2), pay  per use 
+  Use cases : content management, web serving , data sharing, wordpress
+  uses NFSv4.1 protocol 
+  uses security group to control access to EFS 
+  compatible with linux based AMI (not windows)
+  encryptions at rest using KMS 
+  POSIX file system (~linux) that has a standard file API 
+  file system scales automatically, pay per use  no capacity planning! 
+  
+  EFS - performance and storage classes 
+  
+  EFS Scale 
+  1000s of concurrent NFS clients, 10 GB+ / s throughput 
+  grow to petabyte-scale network file system, automatically
+  
+  performance mode (set at efs creation time) 
+  general purpose (default) - latency sensitive use cases (web server , cms .., ) 
+  max I/O - higher latency , throughput , highly parallel ( big data , media processing ) 
+  
+  throughputmode : 
+  
+  bursting - 1` tb = 50 MiB/s + burst of upto 100 MiB/s 
+  provisioned - set your throught regardless of storage , ex : 1 GiB/s for 1 TB storage 
+  Elastic - automatically scales throughput up or down based on your workloads 
+   upto 3 gibs for reads and 1 gibs for writes
+   used for unpredictable workloads
+   
+  EFS - storage classes 
+  
+  Storage tiers (lifecycle management feature - move file after N days) 
+  standard : for frequently accessed files (high storage cost, low latency) 
+  Infrequent access (EFS-IA) : cost to retrieve files , lower price to store . 
+  Archive : rarely accessed data (few times each year), 50% cheaper 
+  implement lifecycle policies to move files between storage tiers 
+  
+  Availablity and durability 
+  standard : multi-AZ , great for prod 
+  one zone : One AZ, great for dev, backup enabled by default, compatible with IA (EFS one zone - IA)
+  
+  over 90% cost savings 
+
+remember: Mount Target (which is just a virtual network interface with an IP address) inside every single Availability Zone (AZ) in your VPC.
+
+TRY to remember difference between EBS and EFS. 
+
+vertical scaling : increase instance size (= scale up/down)
+from : t2.nano-0.5G of RAM, 1 vCPU
+to: u-12tb1.metal-12.3TB of RAM,448 vCPUs
+
+horizontal scaling: increase the number of instances (=scale out/in) 
+autoscaling group 
+load balancer
+
+High Availability : Run instances for the same application across multi AZ
+autoscaling group multiAZ 
+load balancer multi AZ
+
+Why use a load balancer? 
+
+spread load across multiple downstream instances
+expose a single point of acces (DNS) to your application
+seamlessly handle failures of downstream instances 
+do regurlar health checks to your instances 
+provide SSL termination (https) for your websites
+enforce stickness with cookies 
+high availablity across zones 
+seperate public traffic from private traffic
+
+why use an elastic load balancer? 
+
+An elastic load balancer is a managed load balancer 
+  aws guarantees that it will be working 
+  Aws takes care of upgrades, maintenance, high availablity
+  aws provide only a few configuration knobs
+  
+it costs less to setup your own load balancer but it'll be lot more effort on your end 
+
+Its integrated with many AWS offerings / services 
+ EC2 , EC2 autoscaling groups, amazon ECS 
+ AWS certificate manager (ACM), cloud watch 
+ route 53, aws waf, aws global accelerator
  
+ Types of load balancers on AWS 
+ 
+ AWS has 4 kinds of managed load balancers
+  
+  application load balancer (v2-new generation) -2016 - alb
+  http, https ,websocket
+  
+  application load balancers is layer 7 (http)
+  load balancing to multiple http applications across machines (target groups) 
+  load balancing to multple applications on the same machine (ex. containers)
+  support for http/2 and websocket 
+  support redirects (from http to https for ex) 
+ routing tables to different target groups : 
+  routing based on path in url / hostnamein url / query string, headers 
+ alb are a great fit for microservices and container-based applications (ex. docker and amazon ecs)
+ has a port mapping feature to redirect to a dynamic port in Ecs
+ in comparision we'd need multiple classic load balancers per application 
+  
+  network load balancer(v2 -new generation) - 2017 -nlb
+  tcp, tls (secure tcp), udp
+  gateway load balancer -2020 - gwlb 
+  operates at layer 3 (network layer ) -ip protocl
+   
+   overall, its recommended to use the newer generation load balancers as they provide more features 
+   some load balancers can be setup as internal(private) or external (public) elbs
+   
