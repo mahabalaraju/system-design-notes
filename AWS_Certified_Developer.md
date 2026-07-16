@@ -378,9 +378,28 @@ have a provisioned capacity( size in GB's and IOPS)
 	 you add your own software, configuration, operating system, monitering .. 
 	 faster boot/ configuration time because all your software is pre-packaged. 
 	AMI are built for a specific region(and can be copied across regions) 
-	you can launch EC2 instances from : 
-	a PUblic ami  :  AWS provided. 
+	you can launch EC2 instances from :
+	 A Public AMI  :  AWS provided. 
+     your own AMI  : you make and maintain them yourself 
+     An AWS marketplace AMI : an  AMI someone else made (and potentially sells) 
+  
+ AMI process ( from an EC2 instance ) 
+ 
+  start an EC2 instance and customize it 
+  stop the instance ( for data integrity) 
+  build an AMI - this will also create EBS snapshots
+  launch instances from other AMIs
+  
+  This bash script automatically installs, starts, and enables an Apache web server when a Linux server boots up. It then creates a basic "Hello World" webpage that displays the server's unique host name.
 
+#!/bin/bash 
+#Use this for your user data( script from top to bottom)
+#install httpd (linux 2 version)
+yum update -y 
+yum install -y httpd
+systemctl start httpd 
+systemctl enable httpd
+echo "<h1>Hello world from $(hostname -f)</h1>" > /var/www/html/index.html
 
 
 
