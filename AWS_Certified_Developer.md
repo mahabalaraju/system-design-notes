@@ -590,6 +590,7 @@ Network load balancer and gateway load balancer
   disabled by default \
   you pay charges ($) for inter AZ data if enabled 
   
+  
 
 SSL / TLS basics 
 
@@ -633,4 +634,17 @@ Https listener:
   network load balancer (v2) 
   supports multiple listeners with multiple ssl certificates 
   uses server name indication (SNI) to make it work . 
-   
+
+
+
+
+-------------------------------------------------------------------------------- I have went through few concepts without making notes.. ---------------------------------------------------------------------
+
+
+
+
+Amazon Aurora: 
+
+
+
+
