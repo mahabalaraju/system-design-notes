@@ -645,6 +645,110 @@ Https listener:
 
 Amazon Aurora: 
 
+Aurora is a proprietary technology from AWS (not open sourced)
+Postgres and MySQL are both supported as aurora DB ( that means your drivers will work as if Aurora was a postgress or mysql database) 
+Aurora is "AWS cloud optimized" and claims 5x performance improvement over mysql on RDS, over 3x the performance of postgress on RDS 
+Aurora storage automatically grows in increments of 10GB, upto 256GB
+Aurora can have upto 15 replicas and the replication process is faster than mysql(sub 10ms replica lag)
+failover in aurora is instantaneous, Its HA native 
+aurora costs more than RDS(20%more) - but more efficient
+
+ Storage Layer
+ 6 copies of your data across 3 AZ : 
+ 4 copies out of 6 needed for writes 
+ 3 copies out of 6 need for reads
+  self healing with peer-to-peer replication 
+  storage is stripped across 100s of volumes 
+ one  aurora instance takes writes (master)
+ automated failover for master in less than 30sec
+ master +up to 15 aurora read replicas serve reads support for cross region replicaiton 
+  
+	Replication + self healing + auotexpanding 
+	
+Compute Layer (Database Instances):
+
+
+
+Features of aurora :
+
+automatic fail-over 
+backup and recovery 
+isolation and security 
+industry compliance 
+push button scaling 
+automated patching with zero downtime 
+advanced monitering 
+routine maintenance 
+backtrack: restore data at any point of time without using backups
+
+RDS and Aurora  security : 
+
+At rest encryption: 
+ database maser and replicas encryption using AWS KMS -must be defined as launch time 
+ if th emaster is not encrypted the read replicas cannot be encrypted 
+  to encrypt an unencrypted database, go through a DB snapshot and restore as encrypted
+
+In-flight encryption : TLS ready by default , use the AWS tls root certificates client side 
+IAM -authentication : IAM roles to connect to your database (instead of username / password)
+security groups : control network access to your RDS / Aurora DB
+No SSH available except on RDS custom 
+audit logs can be enabled and sent to cloudwatch logs for longer retention
+
+
+
+RDS Proxy :
+
+fully managed database proxy for RDS 
+allows apps to pool and share dB connections established with the database 
+improving database efficiency by reducing the stress on database resources( ex. cpu, ram ) and minimize open connections (and timouts )
+serverless , autoscaling, highly avialable (multi - AZ ) 
+reduced RDS and aurora failover time by up 66%
+supports RDS ( Mysql , postgreSQL, MariaDB.. ) and aurora (mysql and postgreSQL)
+no code changes required for most apps 
+Enforce IAM authentication for DB and securily store credentials in AWS secret manager
+RDS proxy must be accessed by VPC
+
+
+Amazon ElastiCache overview
+
+the same way RCS is to get managed relational databases.. 
+elasticache is to get managed redis or memcached 
+caches are in memory databases with really high performance, low latency 
+helps reduce load off of database for read intensive workloads 
+helps make your application stateless 
+AWS takes care of OS maintainance / patching , optimizations , setup configuration monitering failure recovery and backups 
+its requires code changes 
+
+Partitioning: Divide a table into smaller logical pieces within the same database.
+Sharding: Divide data across multiple database servers/clusters for horizontal scaling.
+
+Partitioning = one house, many rooms
+Sharding = many houses
+
+Amazon memoryDB for redis 
+
+redis compatible, durable, in-memory database service 
+ultrafast performance with over 160million requests / second 
+durable in-memory data storage with multi-AZ transactional logical
+scale seamlessly from 10s GBs to 100s TBs of storage 
+use cases  : web and mobile apps , online gaming , media streaming.. 
+
+What is DNS ? 
+
+domain naming system which translates the human friendly hostnames into the machine IP addresses 
+
+DNS terminologies : 
+domain registrar : amazon route 53 , godaddy .., 
+dns records : a, aaaa, cname , ns
+ zone file: contains DNS records 
+ name server : resolves DNS queries ( authoritative or non authoritative ) 
+ top level domain (TLD) : .com , .us , .in .gov, .org.., 
+ second level domain (SLD) : amazon.com, google.com..,
+ and we have some more naming conventions like Sub-domain if something behind main domain ... 
+ and totally its fully qualified domain name. 
+ 
+ when you hit the url it will go to the Root DNS server > TLD DNS server > SLD DNS server  
+
 
 
 
