@@ -2,12 +2,29 @@ AWS Certified Developer Associate:
 
 https://aws.amazon.com/search/?searchQuery=%20Exam%20Prep%20Official%20Question%20Set%3A%20AWS%20Certified%20Developer%20-%20Associate
 
-Step 3: Your 2-Hour Daily Study Blueprint (30-Day Plan):
+1. Compute
+Lambda ECS EKS (basic) EC2 Elastic Beanstalk
 
-Phase             Days                             Daily 2-Hour Strategy                                                                                       Focus Area
-Phase 1        Days 1–10         Watch Stephane's videos at 1.25x or 1.5x speed. Do the IAM, EC2, and S3 labs.                                       Core Infrastructure & Security
-Phase 2        Days 11–20        Focus deeply on the Serverless Section (Lambda, API Gateway, DynamoDB, Cognito). Build the hands-on projects.       Serverless & Application Dev
-Phase 3        Days 21–25        Learn CI/CD tools (CodeCommit, CodeBuild, CodeDeploy, CodePipeline) and AWS CloudFormation.                         Deployment & Monitoring 
+2. Storage
+S3 DynamoDB 
+
+3. Databases
+RDS Aurora ElastiCache
+
+4. Messaging
+SQS SNS EventBridge
+
+5. Security
+IAM Cognito KMS Secrets Manager
+
+6. Developer Tools
+CodeBuild CodeDeploy CodePipeline
+
+7. Monitoring
+CloudWatch X-Ray
+
+8. Serverless Architecture
+9. 
 
 
  How do you choose AWS region ?  
