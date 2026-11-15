@@ -41,6 +41,10 @@ cryptographic file formats:
 -----BEGIN RSA PRIVATE KEY-----
 MIIEpAIBAAKCAQEA3T1Z... (Base64 encoded data) ...
 -----END RSA PRIVATE KEY-----
+```text
+
+
+
 
 ## 4. Deep Dive: Why Use DER?
 **DER (Distinguished Encoding Rules)** is the strict, raw binary foundation of most cryptographic files. If you open a DER file in a standard text editor, it will look like unprintable symbols or complete gibberish because it is fundamentally not meant for human readability.
