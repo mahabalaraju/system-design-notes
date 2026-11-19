@@ -989,7 +989,7 @@ public void demo() {
 }
 ```
 
-**Dirty checking:**
+**Dirty checking:** ( Hibernate comparing the original snapshot of a managed entity with its current state during flush/commit and automatically generating SQL UPDATE statements for changed fields.)
 - At flush, Hibernate compares each managed entity's current state to its snapshot
 - Generates `UPDATE` for changed fields automatically
 - This is why you often don't call `save()` on managed entities
